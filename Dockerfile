@@ -5,7 +5,7 @@ MAINTAINER Bobby Craig <bobbyrc28@gmail.com>
 WORKDIR /var/lib/skyfactory4
 
 RUN apk update && apk add curl && \
-	curl -LO https://media.forgecdn.net/files/2787/18/SkyFactory_4_Server_4.2.2.zip && \
+	curl -LO https://edge.forgecdn.net/files/3012/800/SkyFactory-4_Server_4.2.2.zip && \
     unzip SkyFactory_4_Server_4.2.2.zip && \
     mv SkyFactory_4_Server_4.2.2/* . && \
     rm SkyFactory_4_Server_4.2.2.zip && \
