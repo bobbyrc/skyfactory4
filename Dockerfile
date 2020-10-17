@@ -1,20 +1,25 @@
-FROM openjdk:8-alpine
-
+FROM openjdk:alpine
 MAINTAINER Bobby Craig <bobbyrc28@gmail.com>
 
-WORKDIR /var/lib/skyfactory4
+USER root
+WORKDIR /minecraft
 
-RUN apk update && apk add curl && \
-	curl -LO https://edge.forgecdn.net/files/3012/800/SkyFactory-4_Server_4.2.2.zip && \
+VOLUME ["/minecraft/world"]
+EXPOSE 25565
+
+# Download and unzip minecraft files
+RUN apk update && apk add curl wget && \
+    mkdir -p /minecraft/world && \
+    curl -LO https://media.forgecdn.net/files/3012/800/SkyFactory-4_Server_4.2.2.zip && \
     unzip SkyFactory-4_Server_4.2.2.zip && \
     rm SkyFactory-4_Server_4.2.2.zip
+    
+# Accept EULA
+RUN echo "# EULA accepted on $(date)" > /minecraft/eula.txt && \
+    echo "eula=TRUE" >> eula.txt
 
-RUN ["chmod", "+x", "./Install.sh"]
-RUN ["chmod", "+x", "./settings.sh"]
+# Install minecraft server itself
+RUN /bin/sh /minecraft/Install.sh
 
-RUN ./Install.sh && \
-    echo '' >> settings.sh && \
-    echo 'export MAX_RAM="2048M"' >> settings.sh && \
-    ./settings.sh
-
-CMD ["./ServerStart.sh"]
+# Startup script
+CMD ["/bin/sh", "/minecraft/ServerStart.sh"] 
