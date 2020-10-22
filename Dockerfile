@@ -21,10 +21,5 @@ RUN echo "# EULA accepted on $(date)" > /minecraft/eula.txt && \
 # Install minecraft server itself
 RUN /bin/sh /minecraft/Install.sh
 
-# Set the allocated RAM for the server
-RUN echo '' >> settings.sh && \
-    echo 'export MAX_RAM="4096M"' >> settings.sh && \
-    ./settings.sh
-
 # Startup script
 CMD ["/bin/sh", "/minecraft/ServerStart.sh"] 
